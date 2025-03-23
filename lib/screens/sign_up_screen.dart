@@ -65,165 +65,168 @@ class SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFDBE9B0),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            TopBarGetStarted(),
-            SizedBox(height: 20),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Color(0xFFDBE9B0),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              TopBarGetStarted(),
+              SizedBox(height: 20),
 
-            // 🔹 Profile Image Picker
-            _buildProfileImagePicker(),
+              // 🔹 Profile Image Picker
+              _buildProfileImagePicker(),
 
-            SizedBox(height: 20),
-            _buildTextField(_nameController, "Enter Full Name"),
-            _buildTextField(_emailController, "Enter Your Email"),
-            _buildTextField(_mobileController, "Enter Your Mobile Number"),
-            _buildTextField(_passwordController, "Password", isPassword: true),
-            SizedBox(height: 20),
+              SizedBox(height: 20),
+              _buildTextField(_nameController, "Enter Full Name"),
+              _buildTextField(_emailController, "Enter Your Email"),
+              _buildTextField(_mobileController, "Enter Your Mobile Number"),
+              _buildTextField(_passwordController, "Password",
+                  isPassword: true),
+              SizedBox(height: 20),
 
-            // 🔹 Signup Button
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30)),
-                padding: EdgeInsets.symmetric(horizontal: 70, vertical: 20),
-              ),
-              onPressed: () => _registerUser(context),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text("Sign up",
-                      style: TextStyle(color: Colors.white, fontSize: 17)),
-                  SizedBox(width: 30),
-                  Container(
-                    height: 30,
-                    width: 30,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFDBE9B0), // Background color
-                      shape: BoxShape.circle, // Circular background
+              // 🔹 Signup Button
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                  padding: EdgeInsets.symmetric(horizontal: 70, vertical: 20),
+                ),
+                onPressed: () => _registerUser(context),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text("Sign up",
+                        style: TextStyle(color: Colors.white, fontSize: 17)),
+                    SizedBox(width: 30),
+                    Container(
+                      height: 30,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFDBE9B0), // Background color
+                        shape: BoxShape.circle, // Circular background
+                      ),
+                      child: Icon(
+                        Icons.arrow_forward,
+                        size: 24,
+                        color: const Color.fromARGB(255, 0, 0, 0),
+                      ),
                     ),
-                    child: Icon(
-                      Icons.arrow_forward,
-                      size: 24,
-                      color: const Color.fromARGB(255, 0, 0, 0),
+                  ],
+                ),
+              ),
+
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  Expanded(
+                    child: Divider(
+                      thickness: 1,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      "or",
+                      style: TextStyle(fontSize: 16, color: Colors.black),
+                    ),
+                  ),
+                  Expanded(
+                    child: Divider(
+                      thickness: 1,
+                      color: Colors.grey,
                     ),
                   ),
                 ],
               ),
-            ),
+              SizedBox(height: 10),
 
-            SizedBox(height: 10),
-            Row(
-              children: [
-                Expanded(
-                  child: Divider(
-                    thickness: 1,
-                    color: Colors.grey,
+              // 🔹 Google Sign-Up Button
+              GestureDetector(
+                onTap: () {
+                  debugPrint("Google Sign-Up Clicked");
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  padding: EdgeInsets.symmetric(vertical: 14),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(color: Colors.grey),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    "or",
-                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset("assets/google_icon.png", height: 24),
+                      SizedBox(width: 10),
+                      Text("Sign up with Google",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w600)),
+                    ],
                   ),
-                ),
-                Expanded(
-                  child: Divider(
-                    thickness: 1,
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-
-            // 🔹 Google Sign-Up Button
-            GestureDetector(
-              onTap: () {
-                debugPrint("Google Sign-Up Clicked");
-              },
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                padding: EdgeInsets.symmetric(vertical: 14),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(color: Colors.grey),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset("assets/google_icon.png", height: 24),
-                    SizedBox(width: 10),
-                    Text("Sign up with Google",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600)),
-                  ],
                 ),
               ),
-            ),
 
-            SizedBox(height: 10),
+              SizedBox(height: 10),
 
-            // 🔹 Facebook Sign-Up Button
-            GestureDetector(
-              onTap: () {
-                debugPrint("Facebook Sign-Up Clicked");
-              },
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                padding: EdgeInsets.symmetric(vertical: 14),
-                decoration: BoxDecoration(
-                  color: Color(0xFF1877F2),
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset("assets/facebook_icon.webp", height: 24),
-                    SizedBox(width: 10),
-                    Text("Sign up with Facebook",
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white)),
-                  ],
+              // 🔹 Facebook Sign-Up Button
+              GestureDetector(
+                onTap: () {
+                  debugPrint("Facebook Sign-Up Clicked");
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  padding: EdgeInsets.symmetric(vertical: 14),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF1877F2),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset("assets/facebook_icon.webp", height: 24),
+                      SizedBox(width: 10),
+                      Text("Sign up with Facebook",
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white)),
+                    ],
+                  ),
                 ),
               ),
-            ),
 
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Already have an account? ",
-                  style: TextStyle(color: Colors.black, fontSize: 16),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
-                    );
-                  },
-                  child: Text(
-                    "Log in",
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Already have an account? ",
+                    style: TextStyle(color: Colors.black, fontSize: 16),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                      );
+                    },
+                    child: Text(
+                      "Log in",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

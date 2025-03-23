@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:krishi/main.dart';
 
-
-
 class OtpVerificationScreen extends StatefulWidget {
-    final String mobileNumber;
+  final String mobileNumber;
 
-  const OtpVerificationScreen({super.key,required this.mobileNumber});
+  const OtpVerificationScreen({super.key, required this.mobileNumber});
 
   @override
   OtpVerificationScreenState createState() => OtpVerificationScreenState();
@@ -18,17 +16,18 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
       List.generate(6, (index) => TextEditingController());
   List<FocusNode> focusNodes = List.generate(6, (index) => FocusNode());
   String get phoneNumber => widget.mobileNumber;
-  
+
   void _verifyOtp() {
     String otpCode = otpControllers.map((e) => e.text).join();
     if (otpCode.length == 6) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("OTP Entered: $otpCode")));
-      if(otpCode == "123456"){
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => MainScreen()),
-    );      }
+      if (otpCode == "123456") {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => MainScreen()),
+        );
+      }
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("Enter full OTP!")));
@@ -38,6 +37,8 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
+
       backgroundColor: const Color(0xFFDDE6AE), // Light green background
       body: Center(
         child: Padding(
@@ -83,9 +84,7 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
                       maxLength: 1,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly
-                      ],
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       decoration: InputDecoration(
                         counterText: "",
                         border: OutlineInputBorder(
@@ -96,9 +95,11 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       ),
                       onChanged: (value) {
                         if (value.isNotEmpty && index < 5) {
-                          FocusScope.of(context).requestFocus(focusNodes[index + 1]);
+                          FocusScope.of(context)
+                              .requestFocus(focusNodes[index + 1]);
                         } else if (value.isEmpty && index > 0) {
-                          FocusScope.of(context).requestFocus(focusNodes[index - 1]);
+                          FocusScope.of(context)
+                              .requestFocus(focusNodes[index - 1]);
                         }
                       },
                     ),
