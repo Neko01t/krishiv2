@@ -9,7 +9,7 @@ class GetStartedScreen extends StatelessWidget {
   final List<String> imageList = [
     'assets/get_started_1st.png',
     'assets/get_started_2nd.png',
-    'assets/get_started_3rd.jpg'
+    'assets/get_started_3rd.png'
   ];
 
   @override
@@ -43,18 +43,19 @@ class GetStartedScreen extends StatelessWidget {
                           ))
                       .toList(),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 10),
                 Text(
                   'by',
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
                 ),
                 Text(
                   'Green Horizons',
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
                 ),
+                const SizedBox(height: 25),
                 Text(
                   ' Grow Smarter,\nHarvest Better!',
-                  style: TextStyle(fontSize: 19, fontWeight: FontWeight.w600),
+                  style: TextStyle(fontSize: 23, fontWeight: FontWeight.w600),
                 ),
                 Spacer(),
                 Padding(

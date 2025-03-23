@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:krishi/screens/log_in_screen.dart';
-import 'package:krishi/screens/otp_verification_screen';
+import 'package:krishi/screens/otp_verification_screen.dart';
 import 'package:krishi/widgets/top_bar_getstarted_widget.dart';
 import 'package:flutter/services.dart';
 

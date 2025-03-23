@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:krishi/screens/data_screen.dart';
 import 'package:krishi/screens/select_circle_screen.dart';
 import 'package:krishi/models/circle_data.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:krishi/widgets/gov_schemes_widgets.dart';
 import 'package:krishi/widgets/mange_fields.dart';
 import 'package:krishi/widgets/misc_widget.dart';
@@ -44,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 10),
             Container(
-              margin: const EdgeInsets.only(left: 15),
+              margin: const EdgeInsets.only(left: 16),
               child: Align(
                 alignment: Alignment.centerLeft, // Force left alignment
                 child: Text(
@@ -56,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
+            const SizedBox(height: 10),
             WeatherWidget(),
             const SizedBox(height: 10),
             ManageFieldsWidget(),
@@ -112,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Hero(
                 tag: 'hero-${circles[index].name}', // Unique tag for animation
                 child: ClipOval(
-                  child: SvgPicture.asset(
+                  child: Image.asset(
                     circles[index].imageUrl,
                     fit: BoxFit.cover,
                   ),

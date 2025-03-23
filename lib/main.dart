@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:krishi/main_screen_state.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -7,11 +8,11 @@ import 'package:krishi/screens/splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await dotenv.load(fileName: ".env");
   try {
     await dotenv.load(fileName: ".env");
     await Firebase.initializeApp();
-    print("✅ Firebase initialized successfully!");
+    await Geolocator.requestPermission();
+    print("✅ all Await file successfully loaded!");
   } catch (e) {
     print("🔥 Firebase Initialization Error: $e");
   }

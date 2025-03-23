@@ -228,36 +228,4 @@ class LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
-  Widget _buildSocialButton(String text, String assetPath) {
-    return SizedBox(
-      width: double.infinity, // Make button take full width
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-            side: const BorderSide(color: Colors.grey),
-          ),
-          padding: const EdgeInsets.symmetric(vertical: 16), // Bigger padding
-          elevation: 2, // Slight shadow for better visibility
-        ),
-        onPressed: () {}, // Add actual Google/Facebook authentication logic
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center, // Center the content
-          children: [
-            Image.asset(assetPath, width: 30, height: 30), // Bigger icon
-            const SizedBox(width: 15), // Increase spacing
-            Text(
-              text,
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }

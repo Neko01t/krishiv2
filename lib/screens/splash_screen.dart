@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:krishi/main.dart';
+import 'package:krishi/screens/language_selection_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:krishi/screens/get_started_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -37,8 +37,8 @@ class SplashScreenState extends State<SplashScreen>
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (_) => MainScreen()));
     } else {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (_) => GetStartedScreen()));
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (_) => LanguageSelectionScreen()));
     }
   }
 

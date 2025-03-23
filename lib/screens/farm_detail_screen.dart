@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class FarmDetailScreen extends StatelessWidget {
   final String fieldName;
@@ -28,14 +27,14 @@ class FarmDetailScreen extends StatelessWidget {
             Center(
               child: Column(
                 children: [
-                  SvgPicture.asset(
+                  Image.asset(
                     assetPath,
                     width: 80,
                     height: 80,
-                    placeholderBuilder: (context) => const Icon(
+                    errorBuilder: (context, error, stackTrace) => const Icon(
                       Icons.image_not_supported,
-                      size: 80,
                       color: Colors.grey,
+                      size: 80,
                     ),
                   ),
                   const SizedBox(height: 10),

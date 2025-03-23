@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -26,16 +27,55 @@ class WeatherScreenState extends State<WeatherScreen> {
   }
 
   Future<Position> _getUserLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      throw Exception('Location services are disabled.');
+    }
+
+    // Check and request permissions
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        throw Exception('Location permission denied.');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      throw Exception('Location permissions are permanently denied.');
+    }
+
+    // Get the current position using the new settings approach
     return await Geolocator.getCurrentPosition(
-      locationSettings: LocationSettings(accuracy: LocationAccuracy.high),
+      locationSettings: LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 10, // Minimum distance (in meters) before an update
+      ),
     );
   }
 
   Future<void> fetchForecast() async {
     try {
-      Position position = await _getUserLocation();
+      double latitude;
+      double longitude;
+
+      if (Platform.isLinux) {
+        // Fixed coordinates for Sambhajinagar
+        latitude = 19.8762;
+        longitude = 75.3433;
+      } else {
+        // Get user's current location on other platforms
+        Position position = await _getUserLocation();
+        latitude = position.latitude;
+        longitude = position.longitude;
+      }
+
       final url = Uri.parse(
-        'https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${position.latitude}&lon=${position.longitude}',
+        'https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=$latitude&lon=$longitude',
       );
 
       final response = await http.get(
@@ -81,7 +121,10 @@ class WeatherScreenState extends State<WeatherScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Weather in ${widget.weatherData['name']}",
+        title: Text(
+            widget.weatherData['name'] == 'Aurangabad'
+                ? 'Weather in Sambhajinagar'
+                : "Weather in ${widget.weatherData['name']}",
             style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Colors.blue.shade200,
       ),
@@ -99,9 +142,10 @@ class WeatherScreenState extends State<WeatherScreen> {
                       children: [
                         // Temperature Card
                         Card(
-                          elevation: 6,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
+                            side: BorderSide(
+                                color: Colors.grey.shade300, width: 1),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
@@ -127,7 +171,12 @@ class WeatherScreenState extends State<WeatherScreen> {
                           children: [
                             Expanded(
                               child: Card(
-                                elevation: 3,
+                                // elevation: 3,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                  side: BorderSide(
+                                      color: Colors.grey.shade300, width: 1),
+                                ),
                                 child: ListTile(
                                   leading: Icon(Icons.water_drop,
                                       color: Colors.blue),
@@ -139,7 +188,11 @@ class WeatherScreenState extends State<WeatherScreen> {
                             ),
                             Expanded(
                               child: Card(
-                                elevation: 3,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                  side: BorderSide(
+                                      color: Colors.grey.shade300, width: 1),
+                                ),
                                 child: ListTile(
                                   leading: Icon(Icons.wind_power,
                                       color: Colors.green),
@@ -156,46 +209,98 @@ class WeatherScreenState extends State<WeatherScreen> {
                         // Weather Forecast Chart
                         if (forecast.isNotEmpty)
                           SizedBox(
-                            height: 250,
-                            child: LineChart(
-                              LineChartData(
-                                gridData: FlGridData(show: false),
+                            height: 260, // Adjusted height for better spacing
+                            child: BarChart(
+                              BarChartData(
+                                gridData: FlGridData(
+                                  show: true,
+                                  drawVerticalLine: false,
+                                  getDrawingHorizontalLine: (value) => FlLine(
+                                    color: Colors.grey.shade300,
+                                    strokeWidth: 1,
+                                    dashArray: [4, 4],
+                                  ),
+                                ),
                                 titlesData: FlTitlesData(
                                   leftTitles: AxisTitles(
                                     sideTitles: SideTitles(
-                                        showTitles: true, reservedSize: 40),
+                                      showTitles:
+                                          true, // Show left (temperature) values
+                                      reservedSize: 40,
+                                      getTitlesWidget: (value, meta) {
+                                        return Padding(
+                                          padding: EdgeInsets.only(right: 8.0),
+                                          child: Text(
+                                            '${value.toInt()}°C',
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.grey.shade700),
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ),
+                                  rightTitles: AxisTitles(
+                                      sideTitles: SideTitles(
+                                          showTitles:
+                                              false)), // Hide right values
+                                  topTitles: AxisTitles(
+                                      sideTitles: SideTitles(
+                                          showTitles:
+                                              false)), // Hide top values
                                   bottomTitles: AxisTitles(
                                     sideTitles: SideTitles(
                                       showTitles: true,
+                                      reservedSize:
+                                          30, // Extra space to move it below bars
                                       getTitlesWidget: (value, meta) {
                                         int index = value.toInt();
                                         if (index >= 0 &&
                                             index < forecast.length) {
-                                          return Text(DateFormat('E')
-                                              .format(forecast[index]['date']));
+                                          return Padding(
+                                            padding: EdgeInsets.only(
+                                                top:
+                                                    8.0), // Moves text slightly lower
+                                            child: Text(
+                                              DateFormat('E').format(
+                                                  forecast[index]['date']),
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          );
                                         }
                                         return Text('');
                                       },
                                     ),
                                   ),
                                 ),
-                                borderData: FlBorderData(show: false),
-                                lineBarsData: [
-                                  LineChartBarData(
-                                    spots: forecast
-                                        .asMap()
-                                        .entries
-                                        .map((entry) => FlSpot(
-                                            entry.key.toDouble(),
-                                            entry.value['temp'].toDouble()))
-                                        .toList(),
-                                    isCurved: true,
-                                    barWidth: 4,
-                                    color: Colors.blue.shade200,
-                                    belowBarData: BarAreaData(show: false),
-                                  ),
-                                ],
+                                borderData: FlBorderData(
+                                  show: false, // Hide borders to make it clean
+                                ),
+                                barGroups:
+                                    forecast.asMap().entries.map((entry) {
+                                  return BarChartGroupData(
+                                    x: entry.key,
+                                    barRods: [
+                                      BarChartRodData(
+                                        toY: entry.value['temp'].toDouble(),
+                                        width: 16,
+                                        borderRadius: BorderRadius.circular(
+                                            6), // Rounded bars
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Colors.blue.shade400,
+                                            Colors.blue.shade200
+                                          ],
+                                          begin: Alignment.bottomCenter,
+                                          end: Alignment.topCenter,
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }).toList(),
                               ),
                             ),
                           ),
@@ -208,24 +313,40 @@ class WeatherScreenState extends State<WeatherScreen> {
                         SizedBox(height: 8),
 
                         SizedBox(
-                          height: 110,
+                          height: 140,
                           child: forecast.isNotEmpty
-                              ? ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: forecast.length,
-                                  itemBuilder: (context, index) {
-                                    var day = forecast[index];
-                                    return Container(
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 6),
-                                      child: Card(
-                                        color: Colors.white,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12)),
-                                        elevation: 3,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(12.0),
+                              ? Container(
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal:
+                                          12), // Adds margin on both sides
+                                  padding: EdgeInsets.symmetric(vertical: 12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(16),
+                                    border:
+                                        Border.all(color: Colors.grey.shade300),
+                                  ),
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: List.generate(7, (index) {
+                                        var day = forecast[index];
+                                        int temp = day['temp'].toInt();
+
+                                        String emoji = '⚫';
+                                        if (temp >= 40) {
+                                          emoji = '🔥';
+                                        } else if (temp >= 30) {
+                                          emoji = '🟡';
+                                        } else if (temp >= 20) {
+                                          emoji = '🌡️';
+                                        } else if (temp <= 19) {
+                                          emoji = '❄️';
+                                        }
+
+                                        return Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 14),
                                           child: Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
@@ -234,19 +355,33 @@ class WeatherScreenState extends State<WeatherScreen> {
                                                 DateFormat('MMM d, E')
                                                     .format(day['date']),
                                                 style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
-                                                    color:
-                                                        Colors.blue.shade800),
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.blue.shade800,
+                                                ),
                                               ),
                                               SizedBox(height: 6),
-                                              Text("${day['temp']}°C"),
+                                              Text(
+                                                emoji,
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        24), // Bigger emoji
+                                              ),
+                                              SizedBox(height: 4),
+                                              Text(
+                                                "${day['temp']}°C",
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
                                             ],
                                           ),
-                                        ),
-                                      ),
-                                    );
-                                  },
+                                        );
+                                      }),
+                                    ),
+                                  ),
                                 )
                               : Center(child: CircularProgressIndicator()),
                         ),
