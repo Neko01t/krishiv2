@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:krishi/screens/schemes_gov_screen.dart';
 
 class GovSchemesWidget extends StatelessWidget {
   const GovSchemesWidget({super.key});
@@ -53,65 +54,6 @@ class GovSchemesWidget extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class SchemesDetailScreen extends StatelessWidget {
-  final List<Map<String, String>> fakeSchemes = List.generate(24, (index) {
-    return {
-      'title': 'Scheme ${index + 1}',
-      'description': 'This is a fake description for Scheme ${index + 1}.',
-    };
-  });
-
-  SchemesDetailScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Government Schemes')),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GridView.builder(
-          itemCount: fakeSchemes.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // Two cards per row
-            childAspectRatio: 3 / 2, // Aspect ratio to resemble playing cards
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-          ),
-          itemBuilder: (context, index) {
-            var scheme = fakeSchemes[index];
-            return Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      scheme['title']!,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      scheme['description']!,
-                      style: TextStyle(fontSize: 14, color: Colors.grey[700]),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
-      ),
     );
   }
 }
