@@ -31,6 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   /// Load user data from JSON file
+
   /// Load user data & profile image
   Future<void> loadUserData() async {
     try {
@@ -172,9 +173,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 SizedBox(height: 20),
                 _profileCard("Personal Information", [
-                  _infoRow("Name", nameController),
-                  _infoRow("Mobile No", mobileController),
-                  _infoRow("Email", emailController),
+                  _infoRow(
+                      "Name",
+                      isEditing
+                          ? nameController
+                          : TextEditingController(text: name)),
+                  _infoRow(
+                      "Mobile No",
+                      isEditing
+                          ? mobileController
+                          : TextEditingController(text: mobile),
+                      editable: false),
+                  _infoRow(
+                    "Email",
+                    isEditing
+                        ? emailController
+                        : TextEditingController(text: email),
+                  ),
                 ]),
                 _dobCard(),
                 _profileCard("Settings", [
