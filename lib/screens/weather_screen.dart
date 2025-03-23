@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -68,8 +69,13 @@ class WeatherScreenState extends State<WeatherScreen> {
         latitude = 19.8762;
         longitude = 75.3433;
       } else {
-        // Get user's current location on other platforms
-        Position position = await _getUserLocation();
+        // Try to get user location but add a timeout (10s max)
+        Position position = await Future.any([
+          _getUserLocation(),
+          Future.delayed(Duration(seconds: 10), () {
+            throw TimeoutException('Location fetching timed out.');
+          }),
+        ]);
         latitude = position.latitude;
         longitude = position.longitude;
       }
@@ -78,10 +84,15 @@ class WeatherScreenState extends State<WeatherScreen> {
         'https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=$latitude&lon=$longitude',
       );
 
-      final response = await http.get(
-        url,
-        headers: {'User-Agent': 'YourAppName/1.0 (your.email@example.com)'},
-      );
+      final response = await Future.any([
+        http.get(
+          url,
+          headers: {'User-Agent': 'YourAppName/1.0 (your.email@example.com)'},
+        ),
+        Future.delayed(Duration(seconds: 10), () {
+          throw TimeoutException('Weather API response timed out.');
+        }),
+      ]);
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
@@ -113,6 +124,15 @@ class WeatherScreenState extends State<WeatherScreen> {
       setState(() {
         errorMessage = 'Error fetching weather: ${e.toString()}';
         isLoading = false;
+
+        // Default to Aurangabad if fetch fails
+        forecast = [
+          for (int i = 0; i < 7; i++)
+            {
+              'date': DateTime.now().add(Duration(days: i)),
+              'temp': 28 + i,
+            }
+        ];
       });
     }
   }
