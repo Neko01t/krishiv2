@@ -4,6 +4,8 @@ import 'package:krishi/widgets/top_bar_getstarted_widget.dart';
 import 'package:krishi/screens/get_started_screen.dart';
 
 class LanguageSelectionScreen extends StatefulWidget {
+  const LanguageSelectionScreen({super.key});
+
   @override
   LanguageSelectionScreenState createState() => LanguageSelectionScreenState();
 }

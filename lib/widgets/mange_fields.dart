@@ -10,13 +10,7 @@ class ManageFieldsWidget extends StatefulWidget {
 }
 
 class _ManageFieldsWidgetState extends State<ManageFieldsWidget> {
-  List<Map<String, String>> fields = [
-    {
-      "name": "Potato",
-      "asset": "assets/images/potato.png",
-      "acres": "2.5 acres"
-    },
-  ];
+  List<Map<String, String>> fields = [];
 
   static const double minHeight = 170;
   static const double maxHeight = 310;
