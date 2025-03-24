@@ -107,7 +107,7 @@ class _NumberVerificationLoginScreenState
                   borderRadius: BorderRadius.circular(30),
                 ),
                 padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 70),
+                const EdgeInsets.symmetric(vertical: 20, horizontal: 70),
               ),
               onPressed: _navigateToVerification,
               child: const Text("CONFIRM",
@@ -123,7 +123,8 @@ class _NumberVerificationLoginScreenState
               Expanded(child: Divider(color: Colors.grey, thickness: 1)),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Text("OR"),
+                child: Text("Already Linked an account on Krishi?",
+                    style: TextStyle(fontSize: 15)),
               ),
               Expanded(child: Divider(color: Colors.grey, thickness: 1)),
             ],
@@ -139,7 +140,7 @@ class _NumberVerificationLoginScreenState
                 // google login button
                 GestureDetector(
                   onTap: () {
-                    debugPrint("Google Sign-Up Clicked");
+                    debugPrint("Google Log-In Clicked");
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.8,
@@ -154,7 +155,7 @@ class _NumberVerificationLoginScreenState
                       children: [
                         Image.asset("assets/google_icon.png", height: 24),
                         SizedBox(width: 10),
-                        Text("Sign up with Google",
+                        Text("Log In with Google",
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w600)),
                       ],
@@ -165,7 +166,7 @@ class _NumberVerificationLoginScreenState
                 const SizedBox(height: 12),
                 GestureDetector(
                   onTap: () {
-                    debugPrint("Facebook Sign-Up Clicked");
+                    debugPrint("Facebook Log-In Clicked");
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.8,
@@ -179,7 +180,7 @@ class _NumberVerificationLoginScreenState
                       children: [
                         Image.asset("assets/facebook_icon.webp", height: 24),
                         SizedBox(width: 10),
-                        Text("Sign up with Facebook",
+                        Text("Log In with Facebook",
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,

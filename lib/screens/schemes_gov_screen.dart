@@ -20,13 +20,13 @@ class _SchemesDetailScreenState extends State<SchemesDetailScreen> {
     super.initState();
     Future.delayed(const Duration(seconds: 1), () {
       setState(() {
-        schemes = List.generate(24, (index) {
+        schemes = List.generate(4, (index) {
           return {
             'title': 'Scheme ${index + 1}',
             'description':
-                'This is a detailed description for Scheme ${index + 1}. It includes all the necessary information about the scheme.',
+            'This is a detailed description for Scheme ${index + 1}. It includes all the necessary information about the scheme.',
             'extraInfo':
-                'Additional details about Scheme ${index + 1}. Apply now to avail the benefits. The scheme covers various aspects such as financial aid, subsidies, and other government benefits.'
+            'Additional details about Scheme ${index + 1}. Apply now to avail the benefits. The scheme covers various aspects such as financial aid, subsidies, and other government benefits.'
           };
         });
         isLoading = false;
@@ -36,8 +36,8 @@ class _SchemesDetailScreenState extends State<SchemesDetailScreen> {
 
   void _launchURL() async {
     const url = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
     } else {
       throw 'Could not launch $url';
     }

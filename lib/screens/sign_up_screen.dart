@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart'; // ✅ Import Firebase UserCredential
+import 'package:krishi/services/auth_service.dart'; // ✅ Import AuthService
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -15,6 +17,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class SignUpScreenState extends State<SignUpScreen> {
+  final AuthService _authService = AuthService(); // ✅ AuthService instance
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
@@ -72,18 +75,18 @@ class SignUpScreenState extends State<SignUpScreen> {
           child: Column(
             children: [
               TopBarGetStarted(),
-              SizedBox(height: 20),
+              SizedBox(height: 15),
 
               // 🔹 Profile Image Picker
               _buildProfileImagePicker(),
 
-              SizedBox(height: 20),
+              SizedBox(height: 15),
               _buildTextField(_nameController, "Enter Full Name"),
               _buildTextField(_emailController, "Enter Your Email"),
               _buildTextField(_mobileController, "Enter Your Mobile Number"),
               _buildTextField(_passwordController, "Password",
                   isPassword: true),
-              SizedBox(height: 20),
+              SizedBox(height: 15),
 
               // 🔹 Signup Button
               ElevatedButton(
@@ -145,8 +148,16 @@ class SignUpScreenState extends State<SignUpScreen> {
 
               // 🔹 Google Sign-Up Button
               GestureDetector(
-                onTap: () {
+                onTap: () async {
                   debugPrint("Google Sign-Up Clicked");
+
+                  UserCredential? userCredential = await _authService.signInWithGoogle();
+                  if (userCredential != null) {
+                    debugPrint("✅ Signed in as: ${userCredential.user?.displayName}");
+                    // Navigate to the main screen or home screen after successful sign-in
+                  } else {
+                    debugPrint("❌ Google Sign-In failed");
+                  }
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.8,
@@ -169,7 +180,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
 
-              SizedBox(height: 10),
+              SizedBox(height: 5),
 
               // 🔹 Facebook Sign-Up Button
               GestureDetector(
@@ -198,7 +209,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
 
-              SizedBox(height: 10),
+              SizedBox(height: 7),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

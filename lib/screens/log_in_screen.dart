@@ -82,8 +82,8 @@ class LoginScreenState extends State<LoginScreen> {
                             horizontal: 70, vertical: 20),
                       ),
                       onPressed: () => _validateAndLogin(context),
-                      child: const Text("Login",
-                          style: TextStyle(color: Colors.white)),
+                      child: const Text("Get back into Krishi",
+                          style: TextStyle(color: Colors.white, fontSize: 16)),
                     ),
 
                     const SizedBox(height: 15),
@@ -118,7 +118,7 @@ class LoginScreenState extends State<LoginScreen> {
                     // Google Sign-in Button
                     GestureDetector(
                       onTap: () {
-                        debugPrint("Google Sign-Up Clicked");
+                        debugPrint("Google Log-In Clicked");
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.8,
@@ -133,7 +133,7 @@ class LoginScreenState extends State<LoginScreen> {
                           children: [
                             Image.asset("assets/google_icon.png", height: 24),
                             SizedBox(width: 10),
-                            Text("Sign up with Google",
+                            Text("Log In with Google",
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.w600)),
                           ],
@@ -146,7 +146,7 @@ class LoginScreenState extends State<LoginScreen> {
                     // Facebook Sign-in Button
                     GestureDetector(
                       onTap: () {
-                        debugPrint("Facebook Sign-Up Clicked");
+                        debugPrint("Facebook Log-In Clicked");
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.8,
@@ -161,7 +161,7 @@ class LoginScreenState extends State<LoginScreen> {
                             Image.asset("assets/facebook_icon.webp",
                                 height: 24),
                             SizedBox(width: 10),
-                            Text("Sign up with Facebook",
+                            Text("Log In with Facebook",
                                 style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
