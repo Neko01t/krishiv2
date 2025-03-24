@@ -10,7 +10,10 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
   double balance = 0.0;
   double income = 0.0;
   double expenses = 0.0;
+  
   final TextEditingController amountController = TextEditingController();
+  final TextEditingController noteController = TextEditingController(); // Controller for notes
+  
   String selectedCurrency = "₹";
   List<FlSpot> balanceHistory = [FlSpot(0, 0)];
   int transactionCount = 1;
@@ -19,6 +22,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
 
   void addIncome() {
     double amount = double.tryParse(amountController.text) ?? 0.0;
+    String note = noteController.text.trim();
     if (amount > 0) {
       setState(() {
         income += amount;
@@ -28,15 +32,18 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
         transactions.add({
           'type': 'Income',
           'amount': amount,
-          'date': DateTime.now().toString()
+          'date': DateTime.now().toString(),
+          'note': note.isEmpty ? "No note" : note,
         });
       });
     }
     amountController.clear();
+    noteController.clear();
   }
 
   void addExpense() {
     double amount = double.tryParse(amountController.text) ?? 0.0;
+    String note = noteController.text.trim();
     if (amount > 0) {
       setState(() {
         expenses += amount;
@@ -46,11 +53,13 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
         transactions.add({
           'type': 'Expense',
           'amount': amount,
-          'date': DateTime.now().toString()
+          'date': DateTime.now().toString(),
+          'note': note.isEmpty ? "No note" : note,
         });
       });
     }
     amountController.clear();
+    noteController.clear();
   }
 
   void resetValues() {
@@ -125,6 +134,14 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                 border: OutlineInputBorder(),
               ),
             ),
+            SizedBox(height: 10),
+            TextField(
+              controller: noteController,
+              decoration: InputDecoration(
+                labelText: "Enter Notes (optional):",
+                border: OutlineInputBorder(),
+              ),
+            ),
             SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -159,17 +176,26 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                 itemCount: transactions.length,
                 itemBuilder: (context, index) {
                   final transaction = transactions[index];
-                  return ListTile(
-                    title: Text(
-                      "${transaction['type']}: $selectedCurrency${transaction['amount']}",
-                      style: TextStyle(
-                        color: transaction['type'] == 'Income'
-                            ? Colors.green
-                            : Colors.red,
-                        fontWeight: FontWeight.bold,
+                  return Card(
+                    margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    child: ListTile(
+                      title: Text(
+                        "${transaction['type']}: $selectedCurrency${transaction['amount']}",
+                        style: TextStyle(
+                          color: transaction['type'] == 'Income'
+                              ? Colors.green
+                              : Colors.red,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(transaction['date']),
+                          Text("Note: ${transaction['note']}"),
+                        ],
                       ),
                     ),
-                    subtitle: Text(transaction['date']),
                   );
                 },
               ),

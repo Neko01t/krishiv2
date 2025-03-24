@@ -20,7 +20,7 @@ class _SchemesDetailScreenState extends State<SchemesDetailScreen> {
     super.initState();
     Future.delayed(const Duration(seconds: 1), () {
       setState(() {
-        schemes = List.generate(10, (index) {
+        schemes = List.generate(4, (index) {
           return {
             'title': 'Scheme ${index + 1}',
             'description':
