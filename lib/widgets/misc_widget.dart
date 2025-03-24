@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:krishi/screens/expense_calculator_screen.dart';
 
 class MiscWidget extends StatelessWidget {
   const MiscWidget({super.key});
@@ -13,7 +14,7 @@ class MiscWidget extends StatelessWidget {
           _buildButton(context, "NPK Calculator", Icons.calculate,
               const NPKCalculatorScreen()),
           _buildButton(context, "Expense Calculator", Icons.attach_money,
-              const ExpenseCalculatorScreen()),
+              ExpenseScreen()),
         ],
       ),
     );
@@ -68,20 +69,6 @@ class NPKCalculatorScreen extends StatelessWidget {
       appBar: AppBar(title: const Text("NPK Calculator")),
       body: const Center(
         child: Text("This is the NPK Calculator Screen"),
-      ),
-    );
-  }
-}
-
-class ExpenseCalculatorScreen extends StatelessWidget {
-  const ExpenseCalculatorScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Expense Calculator")),
-      body: const Center(
-        child: Text("This is the Expense Calculator Screen"),
       ),
     );
   }

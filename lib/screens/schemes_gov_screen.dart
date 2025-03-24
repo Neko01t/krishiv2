@@ -20,7 +20,7 @@ class _SchemesDetailScreenState extends State<SchemesDetailScreen> {
     super.initState();
     Future.delayed(const Duration(seconds: 1), () {
       setState(() {
-        schemes = List.generate(24, (index) {
+        schemes = List.generate(10, (index) {
           return {
             'title': 'Scheme ${index + 1}',
             'description':
@@ -36,8 +36,8 @@ class _SchemesDetailScreenState extends State<SchemesDetailScreen> {
 
   void _launchURL() async {
     const url = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
     } else {
       throw 'Could not launch $url';
     }

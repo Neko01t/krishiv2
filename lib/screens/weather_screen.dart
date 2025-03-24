@@ -65,11 +65,9 @@ class WeatherScreenState extends State<WeatherScreen> {
       double longitude;
 
       if (Platform.isLinux) {
-        // Fixed coordinates for Sambhajinagar
         latitude = 19.8762;
         longitude = 75.3433;
       } else {
-        // Try to get user location but add a timeout (10s max)
         Position position = await Future.any([
           _getUserLocation(),
           Future.delayed(Duration(seconds: 10), () {

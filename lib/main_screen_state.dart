@@ -121,7 +121,7 @@ class MainScreenState extends State<MainScreen> {
               accountEmail: Text(email),
               currentAccountPicture: CircleAvatar(
                 backgroundImage: File(imagePath).existsSync()
-                    ? FileImage(File(imagePath)) // Load from file
+                    ? FileImage(File(imagePath))
                     : AssetImage("assets/happy_farmer.png")
                         as ImageProvider, // Default image
               ),

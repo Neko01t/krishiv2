@@ -55,7 +55,6 @@ class SignUpScreenState extends State<SignUpScreen> {
 
     debugPrint("✅ User info saved at: ${file.path}");
     debugPrint("🖼️ Profile image saved at: ${_image?.path ?? "No image"}");
-    // String mobileNumber = userData['mobile'] ?? "";
 
     Navigator.pushReplacement(
       context,
@@ -72,18 +71,17 @@ class SignUpScreenState extends State<SignUpScreen> {
           child: Column(
             children: [
               TopBarGetStarted(),
-              SizedBox(height: 20),
+              SizedBox(height: 15),
 
-              // 🔹 Profile Image Picker
               _buildProfileImagePicker(),
 
-              SizedBox(height: 20),
+              SizedBox(height: 15),
               _buildTextField(_nameController, "Enter Full Name"),
               _buildTextField(_emailController, "Enter Your Email"),
               _buildTextField(_mobileController, "Enter Your Mobile Number"),
               _buildTextField(_passwordController, "Password",
                   isPassword: true),
-              SizedBox(height: 20),
+              SizedBox(height: 15),
 
               // 🔹 Signup Button
               ElevatedButton(
@@ -169,7 +167,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
 
-              SizedBox(height: 10),
+              SizedBox(height: 5),
 
               // 🔹 Facebook Sign-Up Button
               GestureDetector(
@@ -198,7 +196,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
 
-              SizedBox(height: 10),
+              SizedBox(height: 7),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
