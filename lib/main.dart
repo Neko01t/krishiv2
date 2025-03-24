@@ -13,6 +13,9 @@ void main() async {
     await Firebase.initializeApp();
     await Geolocator.requestPermission();
     print("✅ all Await file successfully loaded!");
+
+    // ✅ Print Firebase integration success in terminal
+    print("✅ Firebase is integrated successfully!");
   } catch (e) {
     print("🔥 Firebase Initialization Error: $e");
   }
