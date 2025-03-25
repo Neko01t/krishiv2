@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class ExpenseScreen extends StatefulWidget {
+  const ExpenseScreen({super.key});
+
   @override
   _ExpenseScreenState createState() => _ExpenseScreenState();
 }
@@ -10,10 +12,11 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
   double balance = 0.0;
   double income = 0.0;
   double expenses = 0.0;
-  
+
   final TextEditingController amountController = TextEditingController();
-  final TextEditingController noteController = TextEditingController(); // Controller for notes
-  
+  final TextEditingController noteController =
+      TextEditingController(); // Controller for notes
+
   String selectedCurrency = "₹";
   List<FlSpot> balanceHistory = [FlSpot(0, 0)];
   int transactionCount = 1;
