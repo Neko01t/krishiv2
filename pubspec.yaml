@@ -53,6 +53,7 @@ dependencies:
   fl_chart: ^0.70.2
   shimmer: ^3.0.0
   url_launcher: ^6.3.1
+  flutter_facebook_auth: ^7.1.1
 
 dev_dependencies:
   flutter_test:

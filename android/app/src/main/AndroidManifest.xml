@@ -1,4 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.krishiv2">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -31,14 +32,31 @@
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">
 
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+            "keyboard|keyboardHidden|screenLayout|screenSize|smallestScreenSize|orientation"
+            android:label="@string/app_name"
+
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme"
                 />
 
+            <meta-data
+                android:name="com.facebook.sdk.AutoLogAppEventsEnabled"
+                android:value="true"/>
+            <meta-data
+                android:name="com.facebook.sdk.AdvertiserIDCollectionEnabled"
+                android:value="true"/>
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
 
@@ -47,10 +65,19 @@
             android:value="2"
             />
 
+
         <!-- ✅ Added Google Sign-In Meta-Data -->
         <meta-data
             android:name="com.google.android.gms.auth.api.signin.v2.default_web_client_id"
             android:value="@string/default_web_client_id"/>
+
+        <!-- ✅ Added Facebook Sign-In Meta-Data -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="com.facebook.sdk.ClientToken"
+            android:value="@string/facebook_client_token"/>
 
     </application>
 </manifest>

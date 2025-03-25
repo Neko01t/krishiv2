@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -194,34 +195,34 @@ class MainScreenState extends State<MainScreen> {
               leading: const Icon(Icons.logout),
               title: const Text("Logout"),
               onTap: () async {
-                try{
+                try {
                   final prefs = await SharedPreferences.getInstance();
-                  await prefs.remove('logged in');
+                  await prefs.remove('logged in'); // ✅ Remove "logged in" flag
 
-                  //✅ Fully Sign Out from Firebase & Google
+                  // ✅ Sign Out from Firebase
                   await FirebaseAuth.instance.signOut();
+
+                  // ✅ Sign Out from Google
                   await GoogleSignIn().disconnect();
                   await GoogleSignIn().signOut();
 
-                  debugPrint("🚪 User Completely Logged Out");
+                  // ✅ Sign Out from Facebook
+                  await FacebookAuth.instance.logOut();
 
-                  //✅ Redirect to splash screen and remove all previous routes
+                  debugPrint("🚪 User Completely Logged Out from Facebook & Google");
+
+                  // ✅ Redirect to splash screen and remove all previous routes
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder: (context) => SplashScreen()),
-                    (route) => false, //Clears Navigation History
+                        (route) => false, // Clears Navigation History
                   );
                 } catch (e) {
-                  debugPrint("❌  Logout Error: $e");
+                  debugPrint("❌ Logout Error: $e");
                 }
-
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => SplashScreen()),
-                  (route) => false,
-                );
               },
-            ),
+            )
+
           ],
         ),
       ),

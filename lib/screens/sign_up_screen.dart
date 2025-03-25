@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:krishi/screens/number_verification_login_screen.dart';
 import 'package:krishi/screens/log_in_screen.dart';
 import 'package:krishi/widgets/top_bar_getstarted_widget.dart';
+// import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -189,8 +190,19 @@ class SignUpScreenState extends State<SignUpScreen> {
 
               // 🔹 Facebook Sign-Up Button
               GestureDetector(
-                onTap: () {
+                onTap: () async {
                   debugPrint("Facebook Sign-Up Clicked");
+
+                  UserCredential? userCredential = await AuthService().signInWithFacebook(context);
+                  if (userCredential != null){
+                    debugPrint("✅ Signed in as: ${userCredential.user?.displayName}");
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder:(context) => MainScreen()),
+                    );
+                  } else {
+                    debugPrint("❌ Facebook Sign-In failed");
+                  }
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.8,
