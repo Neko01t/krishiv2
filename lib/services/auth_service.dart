@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:krishi/screens/home_screen.dart';  // Import your home screen
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
@@ -6,7 +8,7 @@ class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   // Google Sign-In method
-  Future<UserCredential?> signInWithGoogle() async {
+  Future<UserCredential?> signInWithGoogle(BuildContext context) async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) {
@@ -22,6 +24,13 @@ class AuthService {
 
       UserCredential userCredential = await _auth.signInWithCredential(credential);
       print("✅ Google Sign-In Successful: ${userCredential.user?.displayName}");
+
+      // ✅ Navigate to home screen upon successful login
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+
       return userCredential;
     } catch (e) {
       print("🔥 Google Sign-In Error: $e");

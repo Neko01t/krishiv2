@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:krishi/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:krishi/screens/sign_up_screen.dart'; // Import sign-up screen
 import 'package:krishi/screens/language_selection_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,11 +34,15 @@ class SplashScreenState extends State<SplashScreen>
   Future<void> _checkLoginStatus() async {
     final prefs = await SharedPreferences.getInstance();
     bool isLoggedIn = prefs.getBool('logged_in') ?? false;
+    User? user = FirebaseAuth.instance.currentUser; // ✅ Check Firebase Auth
 
-    if (isLoggedIn) {
+
+    if (isLoggedIn || user != null) {
+      //✅ If user is already signed in, go to MainScreen
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (_) => MainScreen()));
     } else {
+      // ❌ If user is NOT signed in, go to Language Selection Screen
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (_) => LanguageSelectionScreen()));
     }

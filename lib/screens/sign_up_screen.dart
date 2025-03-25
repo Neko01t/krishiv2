@@ -1,3 +1,4 @@
+import 'package:krishi/main.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // ✅ Import Firebase UserCredential
 import 'package:krishi/services/auth_service.dart'; // ✅ Import AuthService
 import 'dart:convert';
@@ -151,10 +152,14 @@ class SignUpScreenState extends State<SignUpScreen> {
                 onTap: () async {
                   debugPrint("Google Sign-Up Clicked");
 
-                  UserCredential? userCredential = await _authService.signInWithGoogle();
+                  UserCredential? userCredential = await _authService.signInWithGoogle(context);
                   if (userCredential != null) {
                     debugPrint("✅ Signed in as: ${userCredential.user?.displayName}");
-                    // Navigate to the main screen or home screen after successful sign-in
+                    // Navigate to the home_screen.dart after successful sign-in
+                    Navigator.pushReplacement(
+                    context,
+                        MaterialPageRoute(builder:(context) => MainScreen()),
+                      );
                   } else {
                     debugPrint("❌ Google Sign-In failed");
                   }

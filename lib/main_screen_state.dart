@@ -1,6 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:krishi/main.dart';
 import 'package:krishi/screens/about_screen.dart';
@@ -193,8 +194,26 @@ class MainScreenState extends State<MainScreen> {
               leading: const Icon(Icons.logout),
               title: const Text("Logout"),
               onTap: () async {
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.remove('logged_in'); // Remove login status
+                try{
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.remove('logged in');
+
+                  //✅ Fully Sign Out from Firebase & Google
+                  await FirebaseAuth.instance.signOut();
+                  await GoogleSignIn().disconnect();
+                  await GoogleSignIn().signOut();
+
+                  debugPrint("🚪 User Completely Logged Out");
+
+                  //✅ Redirect to splash screen and remove all previous routes
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => SplashScreen()),
+                    (route) => false, //Clears Navigation History
+                  );
+                } catch (e) {
+                  debugPrint("❌  Logout Error: $e");
+                }
 
                 Navigator.pushAndRemoveUntil(
                   context,
