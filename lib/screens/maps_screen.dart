@@ -1,10 +1,13 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:krishi/main.dart';
+import 'package:krishi/screens/empty_field_screen.dart';
+import 'package:krishi/screens/home_screen.dart';
 import 'package:krishi/utils/map_utils.dart';
 import 'package:map/map.dart';
 import 'package:latlng/latlng.dart' as latlng;
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/widgets.dart';
+import 'package:krishi/data/farm_size.dart';
 
 /// Earth's radius in meters
 const double EARTH_RADIUS = 6378137.0;
@@ -43,21 +46,21 @@ double calculatePolygonArea(List<latlng.LatLng> points) {
   return (area.abs() / 2.0); // Return absolute area in square meters
 }
 
-class CommunityScreen extends StatefulWidget {
-  const CommunityScreen({super.key});
+class MapsScreen extends StatefulWidget {
+  const MapsScreen({super.key});
 
   @override
-  _CommunityScreenState createState() => _CommunityScreenState();
+  _MapsScreenState createState() => _MapsScreenState();
 }
 
-class _CommunityScreenState extends State<CommunityScreen> {
+class _MapsScreenState extends State<MapsScreen> {
   double polygonArea = 0.0;
   double acres = 0.0;
 
   final MapController controller = MapController(
     location: latlng.LatLng(
-      latlng.Angle.degree(19.8762),
-      latlng.Angle.degree(75.3433),
+      latlng.Angle.degree(19.8773),
+      latlng.Angle.degree(75.3533),
     ),
     zoom: zoomLevel,
   );
@@ -104,17 +107,12 @@ class _CommunityScreenState extends State<CommunityScreen> {
               tappedLocations.add(transformer.toLatLng(localOffset));
               polygonArea = calculatePolygonArea(tappedLocations);
               acres = MapUtils.squareMetersToAcres(polygonArea);
+              updateArea(acres);
             });
-
-            // print(
-            //     "Tapped Locations: ${tappedLocations.map((p) => '(${p.latitude}, ${p.longitude})').toList()}");
-            // double areaMeters = calculatePolygonArea(tappedLocations);
-            // print("Polygon Area: ${areaMeters.toStringAsFixed(2)} m²");
           },
 
           child: Stack(
             children: [
-              // 🔹 Map Tiles
               TileLayer(
                 builder: (context, x, y, z) {
                   final tilesInZoom = pow(2.0, z).floor();
@@ -193,24 +191,68 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 ),
               ),
               Positioned(
+                bottom: 20,
+                left: 10,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MainScreen()),
+                    );
+                  },
+                  child: const Text("Done"),
+                ),
+              ),
+
+              Positioned(
                   child: Container(
                       padding: const EdgeInsets.all(10),
                       margin: const EdgeInsets.only(top: 20),
                       height: 60,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.grey.shade300),
+                        borderRadius: BorderRadius.circular(12),
+                        border:
+                            Border.all(color: Colors.grey.shade400, width: 1),
                         boxShadow: [
-                          const BoxShadow(color: Colors.black12, blurRadius: 3)
+                          BoxShadow(
+                            color: Color.fromRGBO(0, 0, 0, 0.1),
+                            blurRadius: 6,
+                            spreadRadius: 2,
+                            offset: Offset(2, 3),
+                          ),
                         ],
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.white,
+                            Colors.grey.shade100
+                          ], // Subtle light gradient
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
                       ),
                       child: Column(children: [
-                        Text(
-                            ['Area: ', acres.toStringAsFixed(2), ' m²']
-                                .join(''),
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Area: ',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue),
+                              ),
+                              TextSpan(
+                                text: '${acres.toStringAsFixed(2)} acres',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black87),
+                              ),
+                            ],
+                          ),
+                        ),
                       ])))
             ],
           ),
@@ -228,7 +270,6 @@ class MapLinePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     if (points.length < 2) return;
-    if (points.length > 7) return;
 
     final Paint paint = Paint()
       ..color = Colors.blue
