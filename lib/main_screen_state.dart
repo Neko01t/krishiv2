@@ -23,7 +23,7 @@ class MainScreenState extends State<MainScreen> {
   final List<Widget> _screens = [
     const HomeScreen(),
     const AnalyticsScreen(),
-    CommunityScreen(),
+    const CommunityScreen(),
     const ProfileScreen(),
     const NotificationScreen(),
   ];
