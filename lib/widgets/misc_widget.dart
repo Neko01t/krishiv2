@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:krishi/screens/expense_calculator_screen.dart' ;
+import 'package:krishi/screens/nuteriant_calculator_screen.dart';
 class MiscWidget extends StatelessWidget {
   const MiscWidget({super.key});
 
@@ -11,7 +12,7 @@ class MiscWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _buildButton(context, "NPK Calculator", Icons.calculate,
-              const NPKCalculatorScreen()),
+              NutrientCalculatorScreen()),
           _buildButton(context, "Expense Calculator", Icons.attach_money,
                ExpenseScreen()),
         ],

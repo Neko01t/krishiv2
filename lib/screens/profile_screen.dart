@@ -147,8 +147,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               setState(() {
                 isEditing = !isEditing;
               });
-              if (!isEditing)
+              if (!isEditing) {
                 _saveUserData(); // Save changes when exiting edit mode
+              }
             },
           ),
         ],

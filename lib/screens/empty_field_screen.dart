@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:krishi/models/circle_data.dart';
 import 'package:krishi/data/list.dart';
+import 'package:krishi/screens/maps_screen.dart';
+import 'package:krishi/data/farm_size.dart';
 
 class EmptyFieldScreen extends StatefulWidget {
   const EmptyFieldScreen({super.key});
@@ -79,8 +81,8 @@ class _EmptyFieldScreenState extends State<EmptyFieldScreen> {
                           width: 40,
                           height: 40,
                           errorBuilder: (context, error, stackTrace) =>
-                              const Icon(Icons.image_not_supported,
-                                  color: Colors.grey, size: 30),
+                          const Icon(Icons.image_not_supported,
+                              color: Colors.grey, size: 30),
                         ),
                         const SizedBox(height: 5),
                         Text(
@@ -105,7 +107,7 @@ class _EmptyFieldScreenState extends State<EmptyFieldScreen> {
               decoration: InputDecoration(
                 labelText: "Enter Field Size (Acres)",
                 border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
               ),
             ),
 
@@ -119,13 +121,64 @@ class _EmptyFieldScreenState extends State<EmptyFieldScreen> {
                   backgroundColor: Colors.blue,
                   foregroundColor: Colors.white,
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+                  const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                 ),
                 child: const Text("Save Field", style: TextStyle(fontSize: 16)),
               ),
             ),
+            const SizedBox(height: 20),
+            Divider(color: Colors.grey.shade300),
+            const SizedBox(height: 20),
+            Text(
+              "Area: ${sharedarea.toStringAsFixed(2)} acres",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: Colors.grey.shade300,
+                        width: 1.0,
+                      ),
+                      boxShadow: const [
+                        BoxShadow(color: Colors.black12, blurRadius: 3)
+                      ],
+                    ),
+                    margin: const EdgeInsets.only(left: 16),
+                    child: GestureDetector(
+                      onTap: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MapsScreen()),
+                        );
+                      },
+                      child: Align(
+                        alignment: Alignment.centerLeft, // Force left alignment
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            "open Map",
+                            style: const TextStyle(
+                              fontSize: 18, // Subtitle size
+                              fontWeight: FontWeight.bold, // Bold
+                            ),
+                          ),
+                        ),
+                      ),
+                    )),
+              ],
+            )
           ],
         ),
       ),

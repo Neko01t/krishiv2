@@ -68,11 +68,25 @@ class AuthService {
     }
   }
 
-  // ✅ Sign out method (Works for both Google & Facebook)
+  // ✅ Improved Sign out method (Handles Google & Facebook Logout Properly)
   Future<void> signOut() async {
-    await _googleSignIn.signOut();
-    await FacebookAuth.instance.logOut();
-    await _auth.signOut();
-    print("🚪 User signed out successfully");
+    try {
+      // ✅ Google Sign-Out
+      if (await _googleSignIn.isSignedIn()) {
+        await _googleSignIn.disconnect(); // Properly disconnects
+        await _googleSignIn.signOut(); // Logs out from Google
+      }
+
+      // ✅ Facebook Sign-Out
+      await FacebookAuth.instance.logOut();
+
+      // ✅ Firebase Sign-Out (Ensures user is fully logged out)
+      await _auth.signOut();
+
+      print("🚪 User signed out successfully");
+    } catch (e) {
+      print("❌ Logout Error: $e");
+    }
   }
+
 }

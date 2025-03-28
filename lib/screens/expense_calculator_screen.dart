@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class ExpenseScreen extends StatefulWidget {
+  const ExpenseScreen({super.key});
+
   @override
   _ExpenseScreenState createState() => _ExpenseScreenState();
 }

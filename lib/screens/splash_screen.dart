@@ -33,20 +33,25 @@ class SplashScreenState extends State<SplashScreen>
 
   Future<void> _checkLoginStatus() async {
     final prefs = await SharedPreferences.getInstance();
-    bool isLoggedIn = prefs.getBool('logged_in') ?? false;
-    User? user = FirebaseAuth.instance.currentUser; // ✅ Check Firebase Auth
+    final bool isLoggedIn = prefs.getBool('logged_in') ?? false;
+    final User? user = FirebaseAuth.instance.currentUser;
 
+    await Future.delayed(Duration(seconds: 3)); // Simulate splash delay
 
-    if (isLoggedIn || user != null) {
-      //✅ If user is already signed in, go to MainScreen
+    if (user != null && isLoggedIn) {
+      // ✅ Only go to MainScreen if both Firebase & SharedPreferences confirm login
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (_) => MainScreen()));
+        context, MaterialPageRoute(builder: (_) => MainScreen()),
+      );
     } else {
-      // ❌ If user is NOT signed in, go to Language Selection Screen
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (_) => LanguageSelectionScreen()));
+      // ✅ Ensure user sees login/signup screen
+      await prefs.setBool('logged_in', false); // Reset login state properly
+      Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (_) => LanguageSelectionScreen()),
+      );
     }
   }
+
 
   @override
   void dispose() {

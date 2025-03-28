@@ -25,7 +25,7 @@ class MainScreenState extends State<MainScreen> {
   final List<Widget> _screens = [
     const HomeScreen(),
     const AnalyticsScreen(),
-    const CommunityScreen(),
+    CommunityScreen(),
     const ProfileScreen(),
     const NotificationScreen(),
   ];
@@ -197,26 +197,26 @@ class MainScreenState extends State<MainScreen> {
               onTap: () async {
                 try {
                   final prefs = await SharedPreferences.getInstance();
-                  await prefs.remove('logged in'); // ✅ Remove "logged in" flag
+                  await prefs.setBool('loggedIn', false); // ✅ Save logout state
 
-                  // ✅ Sign Out from Firebase
+                  final GoogleSignIn googleSignIn = GoogleSignIn();
+
+                  if (await googleSignIn.isSignedIn()) {
+                    await googleSignIn.signOut();
+                  }
+
+                  await FacebookAuth.instance.logOut();
                   await FirebaseAuth.instance.signOut();
 
-                  // ✅ Sign Out from Google
-                  await GoogleSignIn().disconnect();
-                  await GoogleSignIn().signOut();
+                  debugPrint("🚪 User Completely Logged Out");
 
-                  // ✅ Sign Out from Facebook
-                  await FacebookAuth.instance.logOut();
-
-                  debugPrint("🚪 User Completely Logged Out from Facebook & Google");
-
-                  // ✅ Redirect to splash screen and remove all previous routes
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => SplashScreen()),
-                        (route) => false, // Clears Navigation History
-                  );
+                  if (context.mounted) {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => SplashScreen()),
+                          (route) => false,
+                    );
+                  }
                 } catch (e) {
                   debugPrint("❌ Logout Error: $e");
                 }

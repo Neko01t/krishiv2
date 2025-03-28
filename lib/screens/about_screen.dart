@@ -38,9 +38,9 @@ class AboutScreen extends StatelessWidget {
             const SizedBox(height: 10),
 
             _buildCreditItem("Frontend", "Om Sonawane", isBold: true),
-            _buildCreditItem("Auth/Firebase", "Aniket Mundhe"),
-            _buildCreditItem("Design & Management", "Sarevesh Ghodke"),
-            _buildCreditItem("APIs & Research", "Naushade"),
+            _buildCreditItem("Backend & Database", "Sarvesh Ghodke", isBold: true),
+            _buildCreditItem("Design & Management", "Naushad Siddiqui", isBold: true),
+            _buildCreditItem("APIs & Research", "Aniket Mundhe" , isBold: true),
           ],
         ),
       ),
